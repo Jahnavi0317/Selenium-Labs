@@ -3,13 +3,19 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="Pkg1.Lab08_TestNG_Validlogin">
+      <class name="Pkg1.TC0009_TestNG_pageobjects">
         <methods>
+          <include name="f" invocation-numbers="1 2"/>
+          <include name="beforeClass"/>
           <include name="beforeMethod"/>
-          <include name="f"/>
+          <include name="beforeSuite"/>
+          <include name="afterTest"/>
+          <include name="afterClass"/>
+          <include name="beforeTest"/>
           <include name="afterMethod"/>
+          <include name="afterSuite"/>
         </methods>
-      </class> <!-- Pkg1.Lab08_TestNG_Validlogin -->
+      </class> <!-- Pkg1.TC0009_TestNG_pageobjects -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

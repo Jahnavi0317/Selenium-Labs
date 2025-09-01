@@ -3,26 +3,29 @@ package Pkg1;
 import org.testng.annotations.Test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
- 
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.BeforeClass;
- 
+
 import java.time.Duration;
- 
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.AfterSuite;
- 
+
 public class TC009_TestNG {
 	WebDriver driver;
   @Test(dataProvider="logindata")
@@ -41,21 +44,40 @@ public class TC009_TestNG {
 		}
 		driver.findElement(By.name("password")).sendKeys(password);
 		driver.findElement(By.name("username")).sendKeys(Keys.ENTER);
-		
-		WebElement dashboard = driver.findElement(By.xpath("//h6[text()='dashboard']"));
-		if(dashboard.isDisplayed()) {
+		WebElement dashboard = driver.findElement(By.xpath("//h6[text()='Dashboard']"));
+		if(dashboard.isDisplayed())
+		{
 			Assert.assertTrue(true);
-		}else {
-			Assert.assertTrue(true);
-			
 		}
+		else {
+			Assert.assertTrue(false);
+		}
+
   }
 
+  @Parameters("browser")
   @BeforeMethod
-  public void beforeMethod() {
+  public void beforeMethod(String brow) {
 	  System.out.println("This is Before Method");
+	  
+	  if(brow.equalsIgnoreCase("chrome"))
+	  {
 	  WebDriverManager.chromedriver().setup();
 		 driver=new ChromeDriver();
+	  }
+	  
+	  if(brow.equalsIgnoreCase("edge"))
+	  {
+	  WebDriverManager.edgedriver().setup();
+		 driver=new EdgeDriver();
+	  }
+	  
+	  if(brow.equalsIgnoreCase("firefox"))
+	  {
+	  WebDriverManager.firefoxdriver().setup();
+		 driver=new FirefoxDriver();
+	  }
+	  
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
   }
  
@@ -104,3 +126,5 @@ public class TC009_TestNG {
   }
  
 }
+
+   

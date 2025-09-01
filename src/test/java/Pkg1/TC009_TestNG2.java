@@ -1,6 +1,9 @@
 package Pkg1;
 
 import org.testng.annotations.Test;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
  
@@ -8,9 +11,12 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.BeforeClass;
- 
+
+import java.io.IOException;
 import java.time.Duration;
- 
+
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -64,5 +70,36 @@ public class TC009_TestNG2 {
 	  System.out.println("This is After Method");
 	  driver.quit();
   }
+
+
+@DataProvider
+
+public static  Object[][] logindata() throws IOException {
+	
+	String [][] data=new String[3][2];
+	File file = new File ("C:\\Users\\kuruv\\eclipse-workspace\\janu\\janu\\pattern\\CGI_AUG2025\\data.xlsx");
+	FileInputStream fs= new FileInputStream(file);
+	XSSFWorkbook workbook = new XSSFWorkbook (fs);
+	XSSFSheet worksheet=workbook.getSheetAt(0);
+	int rowcount = worksheet.getPhysicalNumberOfRows();
+	System.out.println("rows:" +rowcount);
+	
+	for (int i =0; i<rowcount; i++)
+	{
+		data[i][0]=worksheet.getRow(i).getCell(0).getStringCellValue();
+		data[i][0]=worksheet.getRow(i).getCell(1).getStringCellValue();
+		
+		return data;
+	}
+  return new Object[][] {
+
+    new Object[] { "Admin", "admin123" },
+
+    new Object[] { "pooja", "welcome" },
+
+  };
+
+}
+
 }
  
