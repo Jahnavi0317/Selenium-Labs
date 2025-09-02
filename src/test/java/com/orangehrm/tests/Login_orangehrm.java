@@ -8,47 +8,57 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.orangehrm.Base.BAseTest;
-import com.orangehrm.pages.Loginpage;
 import com.orangehrm.utilities.ExcelUtilities;
-import com.orangehrm.utilities.screenshotUtilities;
+import com.orangehrm.utilities.ScreenshotUtilities;
+
+import Pkg1.LoginPage;
+
+
+
 
 public class Login_orangehrm {
 
-	private static final String extent = null;
 	private static final WebDriver driver = null;
-	static String projectpath=System.getProperty("user.dir")  ;
-	@Test(dataProvider="logindata")
-	public void verifylogin(String username, String password) throws IOException
+	static String projectpath = System.getProperty("user.dir");
 
-	{    ChromeDriver chromeDriver = new ChromeDriver();
-	chromeDriver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
-	Loginpage obj=new Loginpage(driver);
-	obj.enterusername(username);
-	obj.enterpassword(password);
-	obj.clickonbutton();
+	@Test(dataProvider = "logindata")
+	public void verifylogin(String username, String password) throws IOException {
 
-	if(obj.dashisdisplayed())
+		WebDriver driver = new ChromeDriver();  
+		driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
 
-	{
-		BAseTest.pass("Login is sucess for user:"+username);
+		LoginPage obj = new LoginPage(driver);   
+        obj.enterusername(username);
+		obj.enterpassword(password);
+		obj.clickonbutton();
 
+		if (obj.dashisdisplayed()) {
+			BAseTest.pass("Login is success for user: " + username);
+		} else {
+			WebDriver driver1;
+			String screenshotPath = ScreenshotUtilities.capturescreen(driver, "Verify_login_" + username);
+
+			BAseTest.fail("Login unsuccessful for the user: " + username);
+			BAseTest.test.addScreenCaptureFromPath(screenshotPath);
+		}
+
+		if(driver.getTitle().equals("orange")) 
+		{
+			BAseTest.pass("Title is matched");
+		} else {
+			String screenshotPath = ScreenshotUtilities.capturescreen(driver, "TitleMismatch_" + username);
+			BAseTest.fail("Title is not matched");
+			BAseTest.test.addScreenCaptureFromPath(screenshotPath);
+		}
+
+		driver.quit();
 	}
-	else
-		 BAseTest.fail(" login unsuccess for the user:"+username)).addScreenCaptureFromPath(screenshotUtilities.capturescreen(driver, "Verify login"));
 
-
-	if((driver.getTitle()).equals("orange"))
-	{
-		BAseTest.pass("title is matched");
-	}
-	else
-		BAseTest.fail("title is not matched").addScreenCaptureFromPath(screenshotUtilities.capturescreen(driver, "Verify login"));
-
-	}
 	@DataProvider
-	public Object[][] logindata() throws IOException
-	{
-		return ExcelUtilities.getdata(projectpath+"\\src\\test\\resources\\Orangehrm_Testdata\\data.xlsx", "Sheet1");
+	public Object[][] logindata() throws IOException {
+		return ExcelUtilities.getdata(
+				projectpath + "\\src\\test\\resources\\Orangehrm_Testdata\\data.xlsx",
+				"Sheet1"
+				);
 	}
-
 }

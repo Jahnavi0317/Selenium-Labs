@@ -6,7 +6,7 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 public class ExtentManager {
 	private static ExtentReports extent;
 	static String projectpath=System.getProperty("user.dir");
-	public static ExtentReports getinstance()
+	public static ExtentReports getInstance()
 	
 	{
 		
